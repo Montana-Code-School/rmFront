@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+const baseURL = process.env.NODE_ENV === "development" ? 'http://localhost:3001' : 'https://radiant-basin-51640.herokuapp.com/' ;
 
 class App extends Component {
   state = {
@@ -9,7 +10,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3001')
+    fetch(baseURL)
       .then(response => response.json())
       .then((myJson) => {
         console.log(myJson)
