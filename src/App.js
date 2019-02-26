@@ -1,27 +1,41 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+const baseURL = process.env.NODE_ENV === "development" ? 'http://localhost:3001' : 'https://radiant-basin-51640.herokuapp.com/' ;
 
 class App extends Component {
+  state = {
+    speeches: [],
+
+  }
+
+  componentDidMount() {
+    fetch(baseURL)
+      .then(response => response.json())
+      .then((myJson) => {
+        console.log(myJson)
+        this.setState({speeches: myJson});
+      })
+  }
+
   render() {
     return (
       <div className="App">
-        <headerStyles className="App-header">
+        <HeaderStyles className="App-header">
         <h1>Radio Mirror</h1>
           <p>
-            Type or paste your speech in the box below.<br/> 
-            Press play to hear how it sounds, stop to stop, <br/> 
+            Type or paste your speech in the box below.<br/>
+            Press play to hear how it sounds, stop to stop, <br/>
             and save to save desirable outputs.
           </p>
-        </headerStyles>
-        <formStyles>
+        </HeaderStyles>
+        <FormStyles>
         <form>
-          <textarea 
+          <textarea
             rows="20"
             cols="50"
-          >
-            Text here... 
-          </textarea>
+            defaultValue="Text here..."
+          />
           <br/>
           <button>Play</button>
           <button>Stop</button>
@@ -30,27 +44,27 @@ class App extends Component {
         <br/>
         <p>Saved Speeches</p>
         <select>
-          <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-          <option value="mercedes">Mercedes</option>
-          <option value="audi">Audi</option>
+          {this.state.speeches.map( (speech) =>
+            <option value={speech.title} key={speech._id} >{speech.title}</option>
+          )}
+
         </select>
-        </formStyles>
+        </FormStyles>
       </div>
     );
   }
 }
 
-const formStyles = styled.div`
+const FormStyles = styled.div`
   margin: 30px 30px 30px 30px;
 `
 
-const headerStyles = styled.header`
+const HeaderStyles = styled.header`
   background-color: #282c34;
   text-align: center;
   font-size: calc(18px + 2vmin);
   color: white;
-  min-height: 100vh;
+  min-height: 20vh;
   display: flex;
   flex-direction: column;
   align-items: center;
