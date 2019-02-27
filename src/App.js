@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-const baseURL = process.env.NODE_ENV === "development" ? 'http://localhost:3001' : 'https://radiant-basin-51640.herokuapp.com/' ;
+const baseURL = process.env.NODE_ENV === "development" ? 'http://localhost:3001' : 'https://radio-mirror-back.herokuapp.com/' ;
 
 class App extends Component {
   state = {
