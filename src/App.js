@@ -6,8 +6,8 @@ const baseURL = process.env.NODE_ENV === "development" ? 'http://localhost:3001'
 class App extends Component {
   state = {
     speeches: [],
-    textToSay: "I am great and powerful, it is what it is",
-
+    title:'',
+    content:''
   }
 
   synth = window.speechSynthesis;
@@ -30,7 +30,7 @@ class App extends Component {
     if(this.synth.paused) {
       this.synth.resume();
     } else if (!this.synth.speaking) {
-      const sayThis = new SpeechSynthesisUtterance(this.state.textToSay);
+      const sayThis = new SpeechSynthesisUtterance(this.state.content);
       this.synth.speak(sayThis);
     }
   }
@@ -42,9 +42,37 @@ class App extends Component {
   }
   handleChange = (event) => {
     event.preventDefault();
-    this.setState({textToSay: event.target.value})
+    event.stopPropagation();
+    this.setState({[event.target.name]: event.target.value});
   }
-   render() {
+
+  addSpeech = (e) => {
+    e.preventDefault();
+    const {title, content} = this.state;
+    if (!title || !content) {
+      return;
+    }
+    //use body instead of query in path for parameters?
+    fetch(`http://localhost:3001`, {
+        method: "POST",
+        body: JSON.stringify({title, content}),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => response.json())
+      .then((newSpeech) => {
+        const updatedSpeeches = this.state.speeches.slice();
+        updatedSpeeches.push(newSpeech);
+        this.setState({
+          speeches: updatedSpeeches,
+          title: "",
+          content: ""
+        });
+      });
+  }
+
+  render() {
     return (
       <div className="App">
         <HeaderStyles className="App-header">
@@ -56,18 +84,29 @@ class App extends Component {
           </p>
         </HeaderStyles>
         <FormStyles>
-        <form>
-          <textarea
-            rows="20"
-            cols="50"
-            value={this.state.textToSay}
+        <form onSubmit={ (e) => e.preventDefault()}>
+          <input
+            type="text"
+            id="SpeechTitle"
+            name="title"
+            placeholder="Enter new title"
+            value={this.state.title}
             onChange={this.handleChange}
           />
           <br/>
-          <button onClick={this.speak}>Play</button>
-          <button onClick={this.stop}>Stop</button>
-          <button>Save</button>
+          <textarea
+            rows="20"
+            cols="50"
+            name="content"
+            placeholder="Enter new speech"
+            value={this.state.content}
+            onChange={this.handleChange}
+          />
+          <br/>
         </form>
+        <button name="contribute" onClick={this.addSpeech}>Save</button>
+        <button onClick={this.speak}>Play</button>
+        <button onClick={this.stop}>Stop</button>
         <br/>
         <p>Saved Speeches</p>
         <select>
