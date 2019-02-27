@@ -8,7 +8,6 @@ class App extends Component {
     speeches: [],
     title:'',
     content:''
-
   }
 
   synth = window.speechSynthesis;
@@ -44,12 +43,11 @@ class App extends Component {
   handleChange = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    this.setState({[event.target.name]: event.target.value})
+    this.setState({[event.target.name]: event.target.value});
   }
 
   addSpeech = (e) => {
     e.preventDefault();
-    console.log("add speech");
     const {title, content} = this.state;
     if (!title || !content) {
       return;
@@ -70,8 +68,8 @@ class App extends Component {
           speeches: updatedSpeeches,
           title: "",
           content: ""
-        })
-      })
+        });
+      });
   }
 
   render() {
@@ -88,12 +86,12 @@ class App extends Component {
         <FormStyles>
         <form onSubmit={ (e) => e.preventDefault()}>
           <input
-          type="text"
-          id="SpeechTitle"
-          name="title"
-          placeholder="Enter new title"
-          value={this.state.title}
-          onChange={this.handleChange}
+            type="text"
+            id="SpeechTitle"
+            name="title"
+            placeholder="Enter new title"
+            value={this.state.title}
+            onChange={this.handleChange}
           />
           <br/>
           <textarea
