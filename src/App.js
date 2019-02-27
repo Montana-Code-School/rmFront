@@ -6,19 +6,45 @@ const baseURL = process.env.NODE_ENV === "development" ? 'http://localhost:3001'
 class App extends Component {
   state = {
     speeches: [],
+    textToSay: "I am great and powerful, it is what it is",
 
   }
 
+  synth = window.speechSynthesis;
+
   componentDidMount() {
+    this.synth.cancel();
     fetch(baseURL)
       .then(response => response.json())
       .then((myJson) => {
-        console.log(myJson)
         this.setState({speeches: myJson});
       })
   }
 
-  render() {
+  componentWillUnmount() {
+    this.synth.cancel();
+  }
+
+  speak = (event) => {
+    event.preventDefault();
+    if(this.synth.paused) {
+      this.synth.resume();
+    } else if (!this.synth.speaking) {
+      const sayThis = new SpeechSynthesisUtterance(this.state.textToSay);
+      this.synth.speak(sayThis);
+    }
+  }
+  stop = (event) => {
+    event.preventDefault();
+    if (this.synth.speaking){
+      this.synth.pause();
+    }
+  }
+  handleChange = (event) => {
+    event.preventDefault();
+    this.setState({textToSay: event.target.value})
+  }
+   render() {
     return (
       <div className="App">
         <HeaderStyles className="App-header">
@@ -34,11 +60,12 @@ class App extends Component {
           <textarea
             rows="20"
             cols="50"
-            defaultValue="Text here..."
+            value={this.state.textToSay}
+            onChange={this.handleChange}
           />
           <br/>
-          <button>Play</button>
-          <button>Stop</button>
+          <button onClick={this.speak}>Play</button>
+          <button onClick={this.stop}>Stop</button>
           <button>Save</button>
         </form>
         <br/>
