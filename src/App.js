@@ -7,7 +7,8 @@ class App extends Component {
   state = {
     speeches: [],
     title:'',
-    content:''
+    content:'',
+    _id: ''
   }
 
   synth = window.speechSynthesis;
@@ -48,12 +49,35 @@ class App extends Component {
 
   addSpeech = (e) => {
     e.preventDefault();
-    const {title, content} = this.state;
+    const { title, content, _id } = this.state;
     if (!title || !content) {
       return;
     }
-    //use body instead of query in path for parameters?
-    fetch(baseURL, {
+    if(_id){
+      fetch(baseURL, {
+        method: "PUT",
+        body: JSON.stringify({ title, content, _id }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => response.json())
+      .then((newSpeech) => {
+        const { speeches } = this.state;
+        const updatedSpeeches = speeches.slice();
+        const oldSpeechIndex = speeches.findIndex( (currentSpeech) => currentSpeech._id === _id)
+        updatedSpeeches.splice(oldSpeechIndex, 1, newSpeech);
+        this.setState({
+          speeches: updatedSpeeches,
+          title: '',
+          content: '',
+          _id: '',
+        });
+      });
+    }
+
+    if (!_id){
+      fetch(baseURL, {
         method: "POST",
         body: JSON.stringify({title, content}),
         headers: {
@@ -62,6 +86,7 @@ class App extends Component {
       })
       .then(response => response.json())
       .then((newSpeech) => {
+        console.log("post request ", newSpeech)
         const updatedSpeeches = this.state.speeches.slice();
         updatedSpeeches.push(newSpeech);
         this.setState({
@@ -70,15 +95,17 @@ class App extends Component {
           content: ""
         });
       });
+    }
   }
 
   seeSavedSpeech = (e) => {
     e.preventDefault();
     const { speeches } = this.state;
-    const { title, content } = speeches.find( (currentSpeech) => currentSpeech._id === e.currentTarget.value)
+    const { title, content, _id } = speeches.find( (currentSpeech) => currentSpeech._id === e.currentTarget.value)
     this.setState({
       title,
-      content
+      content,
+      _id
     })
   }
 
@@ -114,7 +141,7 @@ class App extends Component {
             />
             <br/>
           </form>
-          <button name="contribute" onClick={this.addSpeech}>Save</button>
+          <button name="contribute" value={this.state._id} onClick={this.addSpeech}>Save</button>
           <button onClick={this.speak}>Play</button>
           <button onClick={this.stop}>Stop</button>
           <br/>
