@@ -72,6 +72,18 @@ class App extends Component {
       });
   }
 
+  seeSavedSpeech = (e) => {
+    e.preventDefault();
+    for (let i = 0; i < this.state.speeches.length; i++) {
+      if (this.state.speeches[i]._id === e.currentTarget.value){
+        this.setState({
+          title: this.state.speeches[i].title,
+          content: this.state.speeches[i].content
+        })
+      }
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -109,11 +121,10 @@ class App extends Component {
         <button onClick={this.stop}>Stop</button>
         <br/>
         <p>Saved Speeches</p>
-        <select>
+        <select onChange={this.seeSavedSpeech}>
           {this.state.speeches.map( (speech) =>
-            <option value={speech.title} key={speech._id} >{speech.title}</option>
+            <option value={speech._id} key={speech._id} >{speech.title}</option>
           )}
-
         </select>
         </FormStyles>
       </div>
