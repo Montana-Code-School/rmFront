@@ -72,6 +72,16 @@ class App extends Component {
       });
   }
 
+  seeSavedSpeech = (e) => {
+    e.preventDefault();
+    const { speeches } = this.state;
+    const { title, content } = speeches.find( (currentSpeech) => currentSpeech._id === e.currentTarget.value)
+    this.setState({
+      title,
+      content
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -84,37 +94,36 @@ class App extends Component {
           </p>
         </HeaderStyles>
         <FormStyles>
-        <form onSubmit={ (e) => e.preventDefault()}>
-          <input
-            type="text"
-            id="SpeechTitle"
-            name="title"
-            placeholder="Enter new title"
-            value={this.state.title}
-            onChange={this.handleChange}
-          />
+          <form onSubmit={ (e) => e.preventDefault()}>
+            <input
+              type="text"
+              id="SpeechTitle"
+              name="title"
+              placeholder="Enter new title"
+              value={this.state.title}
+              onChange={this.handleChange}
+            />
+            <br/>
+            <textarea
+              rows="20"
+              cols="50"
+              name="content"
+              placeholder="Enter new speech"
+              value={this.state.content}
+              onChange={this.handleChange}
+            />
+            <br/>
+          </form>
+          <button name="contribute" onClick={this.addSpeech}>Save</button>
+          <button onClick={this.speak}>Play</button>
+          <button onClick={this.stop}>Stop</button>
           <br/>
-          <textarea
-            rows="20"
-            cols="50"
-            name="content"
-            placeholder="Enter new speech"
-            value={this.state.content}
-            onChange={this.handleChange}
-          />
-          <br/>
-        </form>
-        <button name="contribute" onClick={this.addSpeech}>Save</button>
-        <button onClick={this.speak}>Play</button>
-        <button onClick={this.stop}>Stop</button>
-        <br/>
-        <p>Saved Speeches</p>
-        <select>
-          {this.state.speeches.map( (speech) =>
-            <option value={speech.title} key={speech._id} >{speech.title}</option>
-          )}
-
-        </select>
+          <p>Saved Speeches</p>
+          <select onChange={this.seeSavedSpeech}>
+            {this.state.speeches.map( (speech) =>
+              <option value={speech._id} key={speech._id} >{speech.title}</option>
+            )}
+          </select>
         </FormStyles>
       </div>
     );
