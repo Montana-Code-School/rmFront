@@ -74,14 +74,12 @@ class App extends Component {
 
   seeSavedSpeech = (e) => {
     e.preventDefault();
-    for (let i = 0; i < this.state.speeches.length; i++) {
-      if (this.state.speeches[i]._id === e.currentTarget.value){
-        this.setState({
-          title: this.state.speeches[i].title,
-          content: this.state.speeches[i].content
-        })
-      }
-    }
+    const {speeches} = this.state;
+    const { title, content } = speeches.find( (currentSpeech) => currentSpeech._id === e.currentTarget.value)
+    this.setState({
+      title,
+      content
+    })
   }
 
   render() {
