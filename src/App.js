@@ -53,7 +53,7 @@ class App extends Component {
       return;
     }
     //use body instead of query in path for parameters?
-    fetch(`http://localhost:3001`, {
+    fetch(baseURL, {
         method: "POST",
         body: JSON.stringify({title, content}),
         headers: {
