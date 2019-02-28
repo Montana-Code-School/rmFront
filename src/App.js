@@ -86,7 +86,6 @@ class App extends Component {
       })
       .then(response => response.json())
       .then((newSpeech) => {
-        console.log("post request ", newSpeech)
         const updatedSpeeches = this.state.speeches.slice();
         updatedSpeeches.push(newSpeech);
         this.setState({
