@@ -6,9 +6,73 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  animation: rotaryclub 20s ease-in-out infinite;
+}
+
+@keyframes rotaryclub {
+  0% {background-color: thistle;}
+  50% {background-color: cornflowerblue;}
+  100% {background-color: orchid;}
+}
+@-webkit-keyframes rotaryclub {
+  0% {background-color: thistle;}
+  50% {background-color: cornflowerblue;}
+  100% {background-color: orchid;}
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.button-shadow {
+  -webkit-box-shadow: 3px 6px 25px -6px rgba(0,0,0,0.75);
+  -moz-box-shadow: 3px 6px 25px -6px rgba(0,0,0,0.75);
+  box-shadow: 3px 6px 25px -6px rgba(0,0,0,0.75);
+  font-size: x-large;
+}
+
+.save-button {
+  background-color: goldenrod;
+  color: maroon;
+  padding: 0.8rem;
+  border-radius: 5px;
+  margin: 0.2em;
+  
+}
+.save-button:hover {
+  padding: 0.95rem;
+  background-color: gold;
+  font-weight: bold;
+  transition: all 1s ease-in-out;
+}
+
+.play-button {
+  background-color: green;
+  color: purple;
+  padding: 0.8rem;
+  border-radius: 5px;
+  margin: 0.2em;
+  
+}
+.play-button:hover {
+  padding: 0.95rem;
+  background-color: greenyellow;
+  font-weight: bold;
+  transition: all 1s ease-in-out;
+}
+
+.stop-button {
+  background-color: red;
+  color: white;
+  padding: 0.8rem;
+  border-radius: 5px;
+  margin: 0.2em;
+  
+}
+.stop-button:hover {
+  padding: 0.95rem;
+  background-color: tomato;
+  font-weight: bold;
+  transition: all 1s ease-in-out;
 }

@@ -121,7 +121,7 @@ class App extends Component {
         </HeaderStyles>
         <FormStyles>
           <form onSubmit={ (e) => e.preventDefault()}>
-            <input
+            <StyledInput
               type="text"
               id="SpeechTitle"
               name="title"
@@ -130,9 +130,9 @@ class App extends Component {
               onChange={this.handleChange}
             />
             <br/>
-            <textarea
-              rows="20"
-              cols="50"
+            <StyledTextarea
+              rows="10"
+              cols="30"
               name="content"
               placeholder="Enter new speech"
               value={this.state.content}
@@ -140,27 +140,85 @@ class App extends Component {
             />
             <br/>
           </form>
-          <button name="contribute" value={this.state._id} onClick={this.addSpeech}>Save</button>
-          <button onClick={this.speak}>Play</button>
-          <button onClick={this.stop}>Stop</button>
+          <ButtonWrapper>
+            <ButtonStyles displayText={"Save"} buttonClass={"save-button button-shadow"} buttonName={"contribute"} buttonHandler={this.addSpeech} _id={this.state._id}/>
+            <ButtonStyles displayText={"Play"} buttonClass={"play-button button-shadow"} buttonHandler={this.speak}/>
+            <ButtonStyles displayText={"Stop"} buttonClass={"stop-button button-shadow"} buttonHandler={this.stop}/>
+          </ButtonWrapper>
+          
           <br/>
-          <p>Saved Speeches</p>
-          <select onChange={this.seeSavedSpeech}>
+          <StyledP>Saved Speeches</StyledP>
+          <StyledSelect onChange={this.seeSavedSpeech}>
             {this.state.speeches.map( (speech) =>
               <option value={speech._id} key={speech._id} >{speech.title}</option>
             )}
-          </select>
+          </StyledSelect>
         </FormStyles>
       </div>
     );
   }
 }
 
-const FormStyles = styled.div`
-  margin: 30px 30px 30px 30px;
+const StyledP = styled.p`
+  font-size: x-large;
 `
 
+const StyledSelect = styled.select`
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 25px;
+  font-size: x-large;
+  background-color: #fffff0;
+  -webkit-box-shadow: 3px 6px 25px -6px rgba(0,0,0,0.75);
+  -moz-box-shadow: 3px 6px 25px -6px rgba(0,0,0,0.75);
+  box-shadow: 3px 6px 25px -6px rgba(0,0,0,0.75);
+`
+
+const ButtonStyles = ({_id, buttonHandler, buttonName, buttonClass, displayText}) => {
+  return(
+    <button name={buttonName} value={_id} onClick={buttonHandler} className={buttonClass}>{displayText}</button>
+  )
+}
+
+const StyledTextarea = styled.textarea`
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 25px;
+  font-size: x-large;
+  background-color: #fffff0;
+  -webkit-box-shadow: 3px 6px 25px -6px rgba(0,0,0,0.75);
+  -moz-box-shadow: 3px 6px 25px -6px rgba(0,0,0,0.75);
+  box-shadow: 3px 6px 25px -6px rgba(0,0,0,0.75);
+`
+
+const StyledInput = styled.input`
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 25px;
+  font-size: x-large;
+  background-color: #fffff0;
+  -webkit-box-shadow: 3px 6px 25px -6px rgba(0,0,0,0.75);
+  -moz-box-shadow: 3px 6px 25px -6px rgba(0,0,0,0.75);
+  box-shadow: 3px 6px 25px -6px rgba(0,0,0,0.75);
+`
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`
+
+const FormStyles = styled.div`
+  margin: 30px 30px 30px 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
 const HeaderStyles = styled.header`
+  padding: 5px;
   background-color: #282c34;
   text-align: center;
   font-size: calc(18px + 2vmin);
